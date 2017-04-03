@@ -5,19 +5,19 @@
       "path": "/sap/opu/odata",
       "target": {
         "type": "destination",
-        "name": "S4H",
+        "name": "S4",
         "entryPath": "/sap/opu/odata"
       },
-      "description": "Connexion S4H"
+      "description": "Connexion S4"
     },
     {
       "path": "/sap/bc/ui5_ui5",
       "target": {
         "type": "destination",
-        "name": "S4H",
+        "name": "S4",
         "entryPath": "/sap/bc/ui5_ui5"
       },
-      "description": "Connexion S4H"
+      "description": "Connexion S4"
     },
     {
       "path": "/resources",
