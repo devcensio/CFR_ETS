@@ -4,15 +4,15 @@
 jQuery.sap.require("sap.ui.core.mvc.Controller");
 jQuery.sap.require("sap.ca.scfld.md.controller.BaseFullscreenController");
 jQuery.sap.require("sap.ui.model.odata.datajs");
-jQuery.sap.require("hcm.mytimesheet.model.TimeEntry");
-jQuery.sap.require("hcm.mytimesheet.utils.DataManager");
-jQuery.sap.require("hcm.mytimesheet.utils.ConcurrentEmployment");
+jQuery.sap.require("cfr.etsapp.manage.model.TimeEntry");
+jQuery.sap.require("cfr.etsapp.manage.utils.DataManager");
+jQuery.sap.require("cfr.etsapp.manage.utils.ConcurrentEmployment");
 jQuery.sap.require("sap.ca.ui.model.format.DateFormat");
 jQuery.sap.require("sap.ca.ui.model.type.Number");
 /*global hcm:true */
 sap.ca.scfld.md.controller.BaseFullscreenController
 	.extend(
-		"hcm.mytimesheet.view.S31", {
+		"cfr.etsapp.manage.view.S31", {
 			//controller hooks
 			extHookChangeHeaderFooterOptions: null,
 			extHookChangeObjectBeforePost: null,
@@ -37,7 +37,7 @@ sap.ca.scfld.md.controller.BaseFullscreenController
 				this.worklistItemSelected = false;
 				this.continueSearchOnServerActive = false;
 				this.initialize();
-				this.entry = new hcm.mytimesheet.model.TimeEntry(0, "", false, true);
+				this.entry = new cfr.etsapp.manage.model.TimeEntry(0, "", false, true);
 				var self = this;
 				this.oRouter.attachRouteMatched(function(oEvent) {
 
@@ -56,7 +56,7 @@ sap.ca.scfld.md.controller.BaseFullscreenController
 			onAfterRendering: function() {
 				var self = this;
 				if (!this.oApplication.pernr) {
-					hcm.mytimesheet.utils.ConcurrentEmployment.getCEEnablement(this, function() {
+					cfr.etsapp.manage.utils.ConcurrentEmployment.getCEEnablement(this, function() {
 						if (self.context) {
 							self.initializeView(self.context);
 						}
@@ -77,7 +77,7 @@ sap.ca.scfld.md.controller.BaseFullscreenController
 
 				this.worklistItemSelected = false;
 				this.worklistSelectedObj = {};
-				this.entry = new hcm.mytimesheet.model.TimeEntry(0, "", false, true);
+				this.entry = new cfr.etsapp.manage.model.TimeEntry(0, "", false, true);
 				var firstDayOffSet = parseInt(context[context.indexOf("offset") + 6], 10);
 				this.byId("weeklyCalendar").setFirstDayOffset(firstDayOffSet);
 				var dateStr = decodeURIComponent(context),
@@ -137,8 +137,8 @@ sap.ca.scfld.md.controller.BaseFullscreenController
 
 					this.oApplication = this.oApplicationFacade.oApplicationImplementation;
 
-					this.oConfiguration = new hcm.mytimesheet.utils.InitialConfigHelper();
-					this.oService = new hcm.mytimesheet.Service();
+					this.oConfiguration = new cfr.etsapp.manage.utils.InitialConfigHelper();
+					this.oService = new cfr.etsapp.manage.Service();
 					this.oConnectionManager = this.oApplication.oConnectionManager;
 					this.oBundle = this.oApplicationFacade.oApplicationImplementation
 						.getResourceBundle();
@@ -1064,7 +1064,7 @@ sap.ca.scfld.md.controller.BaseFullscreenController
 				//                     this.favoriteDialog.insertItem(this.favDialogHeaders[1], (this.favDialogHeaders[0].getCount() + 1));
 				//                 }
 				//                 catch(o){
-				//                     jQuery.sap.log.warning("Could not add title", ["onLiveFavChange"], ["hcm.mytimesheet"]);
+				//                     jQuery.sap.log.warning("Could not add title", ["onLiveFavChange"], ["cfr.etsapp.manage"]);
 				//                 }
 				//             }
 				//             source.getBinding("items").filter(oFilters);
@@ -2338,7 +2338,7 @@ sap.ca.scfld.md.controller.BaseFullscreenController
 				 * @ControllerHook Modify the post object
 				 * This hook method can be used to modify the object before the post call
 				 * It is called when the decision options for the detail item are fetched successfully
-				 * @callback hcm.mytimesheet.view.S31~extHookChangeObjectBeforePost
+				 * @callback cfr.etsapp.manage.view.S31~extHookChangeObjectBeforePost
 				 * @param {object} Post Object
 				 * @return {object} Final Post Object
 				 */
@@ -2617,7 +2617,7 @@ sap.ca.scfld.md.controller.BaseFullscreenController
 						}
 					}
 					if (!this.oService) {
-						this.oService = new hcm.mytimesheet.Service();
+						this.oService = new cfr.etsapp.manage.Service();
 					}
 					this.oService.createFavorite(this, favObj, function(oData) {
 						var newFav = {
@@ -2704,7 +2704,7 @@ sap.ca.scfld.md.controller.BaseFullscreenController
 				}
 
 				if (!this.oService) {
-					this.oService = new hcm.mytimesheet.Service();
+					this.oService = new cfr.etsapp.manage.Service();
 				}
 				this.oService.updateFavorite(this, favObj, jQuery.proxy(function() {
 					this.oApplication.getModel("createScreenModel").setProperty("/favorites", favorites);
@@ -2753,7 +2753,7 @@ sap.ca.scfld.md.controller.BaseFullscreenController
 				var selectedItem = evt.getParameter("listItem");
 				var selectedId = selectedItem.getCustomData()[2].getValue();
 				if (!this.oService) {
-					this.oService = new hcm.mytimesheet.Service();
+					this.oService = new cfr.etsapp.manage.Service();
 				}
 				var favObj = {
 					Name: evt.getParameter("listItem").getTitle(),
@@ -3002,7 +3002,7 @@ sap.ca.scfld.md.controller.BaseFullscreenController
 					 * @ControllerHook Modify the footer buttons
 					 * This hook method can be used to add and change buttons for the detail view footer
 					 * It is called when the decision options for the detail item are fetched successfully
-					 * @callback hcm.mytimesheet.view.S31~extHookChangeHeaderFooterOptions
+					 * @callback cfr.etsapp.manage.view.S31~extHookChangeHeaderFooterOptions
 					 * @param {object} Header Footer Object
 					 * @return {object} Header Footer Object
 					 */

@@ -1,10 +1,10 @@
 /*
  * Copyright (C) 2009-2014 SAP SE or an SAP affiliate company. All rights reserved
  */
-jQuery.sap.declare("hcm.mytimesheet.utils.InitialConfigHelper");
-jQuery.sap.require("hcm.mytimesheet.utils.DataManager");
+jQuery.sap.declare("cfr.etsapp.manage.utils.InitialConfigHelper");
+jQuery.sap.require("cfr.etsapp.manage.utils.DataManager");
 /*global hcm:true */
-hcm.mytimesheet.Configuration.extend("hcm.mytimesheet.utils.InitialConfigHelper", {
+cfr.etsapp.manage.Configuration.extend("cfr.etsapp.manage.utils.InitialConfigHelper", {
 			
 		getText : function(sKey, aParams) {
 			return this.oBundle.getText(sKey, aParams);

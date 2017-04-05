@@ -2,19 +2,19 @@
  * Copyright (C) 2009-2014 SAP SE or an SAP affiliate company. All rights reserved
  */
 jQuery.sap.require("sap.ca.scfld.md.controller.BaseFullscreenController");
-jQuery.sap.require("hcm.mytimesheet.utils.DataManager");
-jQuery.sap.require("hcm.mytimesheet.utils.ConcurrentEmployment");
-jQuery.sap.require("hcm.mytimesheet.model.TimeEntry");
+jQuery.sap.require("cfr.etsapp.manage.utils.DataManager");
+jQuery.sap.require("cfr.etsapp.manage.utils.ConcurrentEmployment");
+jQuery.sap.require("cfr.etsapp.manage.model.TimeEntry");
 jQuery.sap.require("sap.ca.ui.dialog.factory");
 jQuery.sap.require("sap.ca.ui.dialog.Dialog");
 jQuery.sap.require("sap.ca.ui.message.message");
 jQuery.sap.require("sap.ca.ui.model.format.DateFormat");
-jQuery.sap.require("hcm.mytimesheet.utils.InitialConfigHelper");
+jQuery.sap.require("cfr.etsapp.manage.utils.InitialConfigHelper");
 jQuery.sap.require("sap.ca.ui.model.type.Number");
 /*global hcm:true */
 sap.ca.scfld.md.controller.BaseFullscreenController
 	.extend(
-		"hcm.mytimesheet.view.S3", {
+		"cfr.etsapp.manage.view.S3", {
 			extHookChangeHeaderFooterOptions: null,
 			extHookAlterColumns: null,
 			extHookChangeObjectBeforePost: null,
@@ -25,10 +25,10 @@ sap.ca.scfld.md.controller.BaseFullscreenController
 				sap.ca.scfld.md.controller.BaseFullscreenController.prototype.onInit.call(this);
 				this.oApplication = this.oApplicationFacade.oApplicationImplementation;
 				this.oBundle = this.oApplicationFacade.oApplicationImplementation.getResourceBundle();
-				this.oConfiguration = new hcm.mytimesheet.utils.InitialConfigHelper();
+				this.oConfiguration = new cfr.etsapp.manage.utils.InitialConfigHelper();
 				this.oConfiguration.setResourceBundle(this.oBundle);
 				if (!this.oService) {
-					this.oService = new hcm.mytimesheet.Service();
+					this.oService = new cfr.etsapp.manage.Service();
 				}
 				var self = this;
 				sap.ui.Device.orientation.attachHandler(function(oEvent) {
@@ -63,7 +63,7 @@ sap.ca.scfld.md.controller.BaseFullscreenController
 						this.initializeTable();
 						this.updateData();
 					} catch (o) {
-						hcm.mytimesheet.utils.ConcurrentEmployment.getCEEnablement(this, function() {
+						cfr.etsapp.manage.utils.ConcurrentEmployment.getCEEnablement(this, function() {
 							self.initializeView();
 							self.initializeTable();
 							self.updateData();
@@ -430,7 +430,7 @@ sap.ca.scfld.md.controller.BaseFullscreenController
 				 * @ControllerHook Modify the format of the time
 				 * This hook method can be used to chnage the format of the time from HH:MM to decimals
 				 * It is called while it is changing the format.
-				 * @callback hcm.mytimesheet.view.S3~extHookChangeFormatTime
+				 * @callback cfr.etsapp.manage.view.S3~extHookChangeFormatTime
 				 * @param {object}  Object
 				 * @return {object} Object
 				 */	          
@@ -804,7 +804,7 @@ sap.ca.scfld.md.controller.BaseFullscreenController
 				 * @ControllerHook Modify the post object
 				 * This hook method can be used to modify the object before the post call
 				 * It is called when the decision options for the detail item are fetched successfully
-				 * @callback hcm.mytimesheet.view.S3~extHookChangeObjectBeforePost
+				 * @callback cfr.etsapp.manage.view.S3~extHookChangeObjectBeforePost
 				 * @param {object} Post Object
 				 * @return {object} Final Post Object
 				 */
@@ -1395,7 +1395,7 @@ sap.ca.scfld.md.controller.BaseFullscreenController
 					}
 					if (lastRecordNumber === null || data[i].RecordNumber !== lastRecordNumber) {
 						lastRecordNumber = data[i].RecordNumber;
-						oEntryData = new hcm.mytimesheet.model.TimeEntry(0, "", data[i].Suggested === "TRUE", true);
+						oEntryData = new cfr.etsapp.manage.model.TimeEntry(0, "", data[i].Suggested === "TRUE", true);
 
 						oDayData.entries.push(oEntryData);
 					}
@@ -1601,7 +1601,7 @@ sap.ca.scfld.md.controller.BaseFullscreenController
 				 * @ControllerHook Modify the clumns in the table
 				 * This hook method can be used to add and remove columns for the table used to display the entries
 				 * It is called after the standard columns are added to the table
-				 * @callback hcm.mytimesheet.view.S3~extHookAlterColumns
+				 * @callback cfr.etsapp.manage.view.S3~extHookAlterColumns
 				 * @param {object} Table Header Object
 				 * @return {object} Table Footer Object
 				 */
@@ -2046,7 +2046,7 @@ sap.ca.scfld.md.controller.BaseFullscreenController
 				 * @ControllerHook Modify the footer buttons
 				 * This hook method can be used to add and change buttons for the detail view footer
 				 * It is called when the decision options for the detail item are fetched successfully
-				 * @callback hcm.mytimesheet.view.S3~extHookChangeHeaderFooterOptions
+				 * @callback cfr.etsapp.manage.view.S3~extHookChangeHeaderFooterOptions
 				 * @param {object} Header Footer Object
 				 * @return {object} Header Footer Object
 				 */

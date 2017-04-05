@@ -1,17 +1,17 @@
 /*
  * Copyright (C) 2009-2014 SAP SE or an SAP affiliate company. All rights reserved
  */
-jQuery.sap.declare("hcm.mytimesheet.utils.DataManager");
+jQuery.sap.declare("cfr.etsapp.manage.utils.DataManager");
 jQuery.sap.require("sap.ui.model.odata.datajs");
 jQuery.sap.require("sap.m.MessageToast");
 jQuery.sap.require("sap.ca.ui.message.message");
 jQuery.sap.require("sap.ui.base.EventProvider");
-jQuery.sap.require("hcm.mytimesheet.utils.InitialConfigHelper");
+jQuery.sap.require("cfr.etsapp.manage.utils.InitialConfigHelper");
 jQuery.sap.require("sap.m.MessageBox");
 
 sap.ui.base.EventProvider
 	.extend(
-		"hcm.mytimesheet.Service", {
+		"cfr.etsapp.manage.Service", {
 			metadata: {
 				publicMethods: ["getModel", "getGeneralParameters",
 								"getSpendingDataByHierarhyNodesAndPeriod",
@@ -63,7 +63,7 @@ sap.ui.base.EventProvider
 						}
 						message = body.error.message.value;
 					} catch (e) {
-						jQuery.sap.log.warning("Could parse the response", ["parseError"], ["hcm.mytimesheet"]);
+						jQuery.sap.log.warning("Could parse the response", ["parseError"], ["cfr.etsapp.manage"]);
 					}
 				}
 				if (message === "") {
@@ -419,7 +419,7 @@ sap.ui.base.EventProvider
 														}
 													}
 												} catch (e) {
-													jQuery.sap.log.warning("Could parse the response", ["submitTimeEntry"], ["hcm.mytimesheet"]);
+													jQuery.sap.log.warning("Could parse the response", ["submitTimeEntry"], ["cfr.etsapp.manage"]);
 												}
 												self.errors
 													.push({

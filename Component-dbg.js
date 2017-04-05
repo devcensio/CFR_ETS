@@ -1,15 +1,15 @@
 /*
  * Copyright (C) 2009-2014 SAP SE or an SAP affiliate company. All rights reserved
  */
-jQuery.sap.declare("hcm.mytimesheet.Component");
+jQuery.sap.declare("cfr.etsapp.manage.Component");
 jQuery.sap.require("sap.ca.scfld.md.ComponentBase");
 
 // extent of sap.ca.scfld.md.ComponentBase
-sap.ca.scfld.md.ComponentBase.extend("hcm.mytimesheet.Component", {
+sap.ca.scfld.md.ComponentBase.extend("cfr.etsapp.manage.Component", {
 	metadata : sap.ca.scfld.md.ComponentBase.createMetaData("FS", {
 										// "name" : "My Timesheet", 
 										// "version" : "1.8.28",
-										// "library" : "hcm.mytimesheet",
+										// "library" : "cfr.etsapp.manage",
 										"manifest": "json",
 										"includes" : [],
 										// "dependencies" : {
@@ -26,7 +26,7 @@ sap.ca.scfld.md.ComponentBase.extend("hcm.mytimesheet.Component", {
 											"homeScreenIconTablet" : "./resources/sap/ca/ui/themes/base/img/launchicon/My_Timesheet/72_iPad_Desktop_Launch.png",
 											"homeScreenIconTablet@2" : "./resources/sap/ca/ui/themes/base/img/launchicon/My_Timesheet/144_iPad_Retina_Web_Clip.png"
 										},
-										viewPath : "hcm.mytimesheet.view",
+										viewPath : "cfr.etsapp.manage.view",
 										fullScreenPageRoutes : {
 											
 											"S3" : {
@@ -49,7 +49,7 @@ sap.ca.scfld.md.ComponentBase.extend("hcm.mytimesheet.Component", {
 	createContent : function() {
 		var oViewData = {component: this};
 		return sap.ui.view({
-			viewName : "hcm.mytimesheet.Main",
+			viewName : "cfr.etsapp.manage.Main",
 			type : sap.ui.core.mvc.ViewType.XML,
 			viewData : oViewData
 		});

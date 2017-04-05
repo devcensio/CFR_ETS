@@ -1,9 +1,9 @@
 /*
  * Copyright (C) 2009-2014 SAP SE or an SAP affiliate company. All rights reserved
  */
-jQuery.sap.declare("hcm.mytimesheet.model.TimeEntry");
+jQuery.sap.declare("cfr.etsapp.manage.model.TimeEntry");
 
-hcm.mytimesheet.model.TimeEntry = function(time, childName, suggestion, bExisting) {
+cfr.etsapp.manage.model.TimeEntry = function(time, childName, suggestion, bExisting) {
 	this.time = time;
 	this.hours = Math.floor(time);
 	this.minutes = Math.round((time - Math.floor(time)) * 60);
@@ -24,7 +24,7 @@ hcm.mytimesheet.model.TimeEntry = function(time, childName, suggestion, bExistin
 	this.statusId = "";
 };
 
-hcm.mytimesheet.model.TimeEntry.prototype.setStartEndTimes = function(
+cfr.etsapp.manage.model.TimeEntry.prototype.setStartEndTimes = function(
 		date, entries, missingTime, workingDay) {
 	var lastUndeletedIndex = entries.length-1;
 	while(lastUndeletedIndex>=0 && entries[entries.length-1].deleted) {
@@ -47,14 +47,14 @@ hcm.mytimesheet.model.TimeEntry.prototype.setStartEndTimes = function(
 	this.endTime = (endTime.getHours()+100).toString().substring(1, 3) + (endTime.getMinutes()+100).toString().substring(1, 3) + "00";
 };
 
-hcm.mytimesheet.model.TimeEntry.prototype.createTime = function(
+cfr.etsapp.manage.model.TimeEntry.prototype.createTime = function(
 		date, timeStr) {
 	var time = new Date(date.getTime());
 	time.setHours(parseInt(timeStr.substring(0, 2), 10), parseInt(timeStr.substring(2, 4), 10));
 	return time;
 };
 
-hcm.mytimesheet.model.TimeEntry.prototype.setData = function(
+cfr.etsapp.manage.model.TimeEntry.prototype.setData = function(
 		data) {
 	if (data.FieldName === "TIME") {
 		this.recordNumber = data.RecordNumber;
@@ -98,4 +98,3 @@ hcm.mytimesheet.model.TimeEntry.prototype.setData = function(
 		}
 	}
 };
-

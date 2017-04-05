@@ -1,9 +1,9 @@
 /*
  * Copyright (C) 2009-2014 SAP SE or an SAP affiliate company. All rights reserved
  */
-jQuery.sap.declare("hcm.mytimesheet.utils.ConcurrentEmployment");
+jQuery.sap.declare("cfr.etsapp.manage.utils.ConcurrentEmployment");
 /*global hcm:true */
-hcm.mytimesheet.utils.ConcurrentEmployment = {
+cfr.etsapp.manage.utils.ConcurrentEmployment = {
 
 	getCEEnablement: function(self, successHandler) {
 		this.initialize(self, successHandler);

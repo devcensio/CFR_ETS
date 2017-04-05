@@ -12,7 +12,7 @@ sap.ca.scfld.md.ConfigurationBase.extend("cfr.etsapp.manage.Configuration", {
 			{
 			    name: "ETSAPP_SRV",
                 masterCollection: "Favorites",
-                serviceUrl: hcm.mytimesheet.Component.getMetadata().getManifestEntry("sap.app").dataSources["ETSAPP_SRV"].uri, //oData service relative path
+                serviceUrl: cfr.etsapp.manage.Component.getMetadata().getManifestEntry("sap.app").dataSources["ETSAPP_SRV"].uri, //oData service relative path
                 isDefault: true,
                 mockedDataSource: "/cfr.etsapp.manage/model/metadata.xml"}
 		]
