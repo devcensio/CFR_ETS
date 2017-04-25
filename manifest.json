@@ -9,7 +9,7 @@
 		},
 		"ach": "PA-FIO-TS",
 		"dataSources": {
-			"HCM_TIMESHEET_MAN_SRV": {
+			"ETSAPP_SRV": {
 				"uri": "/sap/opu/odata/CFR/ETSAPP_SRV/",
 				"settings": {}
 			}

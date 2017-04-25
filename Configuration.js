@@ -7,10 +7,10 @@ jQuery.sap.require("sap.ca.scfld.md.app.Application");
 sap.ca.scfld.md.ConfigurationBase.extend("cfr.etsapp.manage.Configuration", {
 	oServiceParams: {
 		serviceList: [{
-			name: "ETSAPP_SVR",
+			name: "ETSAPP_SRV",
 			masterCollection: "Favorites",
-			//serviceUrl: cfr.etsapp.manage.Component.getMetadata().getManifestEntry("sap.app").dataSources["ETSAPP_SVR"].uri,
-			serviceUrl: URI('/sap/opu/odata/CFR/ETSAPP_SRV/').directory(),
+			serviceUrl: cfr.etsapp.manage.Component.getMetadata().getManifestEntry("sap.app").dataSources["ETSAPP_SRV"].uri,
+			//serviceUrl: URI('/sap/opu/odata/CFR/ETSAPP_SRV/').directory(),
 			isDefault: true,
 			mockedDataSource: "/cfr.etsapp.manage/model/metadata.xml"
 		}]
