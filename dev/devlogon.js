@@ -301,7 +301,6 @@ sap.ui.define([
 					});
 			}
 		},
-
 		/********************************************************************
 		 * read offline store archieve error message after flush/refresh operation
 		 ********************************************************************/
