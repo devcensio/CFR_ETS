@@ -1,0 +1,16 @@
+<core:FragmentDefinition height="100%" width="100%" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form">
+	<Panel>
+		<ObjectHeader title="" number="" numberUnit=""></ObjectHeader>
+		<IconTabBar select="onDetailSelect" id="idIconTabBar">
+			<items>
+				<IconTabFilter key="" text="" icon="sap-icon://hint">
+					<!--key="Detail" -->
+					<content>
+						<core:Fragment fragmentName="CFR_ETS.view.DetailInfoForm" type="XML"/>
+					</content>
+				</IconTabFilter>
+			</items>
+		</IconTabBar>
+	</Panel>
+</core:FragmentDefinition>

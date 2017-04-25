@@ -1,0 +1,18 @@
+<core:FragmentDefinition height="100%" width="100%" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form">
+	<Panel>
+		<content>
+			<f:SimpleForm id="iconTabFilter1form" minWidth="1024" editable="false" layout="ResponsiveGridLayout" labelSpanL="3" labelSpanM="3"
+				emptySpanL="4" emptySpanM="4" columnsL="1">
+				<f:content>
+					<Label id="label1" text="Name"></Label>
+					<Input id="input1" value="{LibelleFournisseur}"></Input>
+					<Label id="label2" text="City"></Label>
+					<Input id="input2" value="{Ville}"></Input>
+					<Label id="label3" text="Postal Code"></Label>
+					<Input id="input3" value="{CodePostal}"></Input>
+				</f:content>
+			</f:SimpleForm>
+		</content>
+	</Panel>
+</core:FragmentDefinition>

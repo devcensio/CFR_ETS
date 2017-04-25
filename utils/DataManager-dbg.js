@@ -117,7 +117,7 @@ sap.ui.base.EventProvider
 						});
 
 			},
-
+			
 			getWorkDays: function(appController, pernr, begda, endda, fSuccess) {
 				// 		this.showBusy();
 				var self = this;

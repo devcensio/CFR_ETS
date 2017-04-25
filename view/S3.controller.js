@@ -11,6 +11,8 @@ jQuery.sap.require("sap.ca.ui.message.message");
 jQuery.sap.require("sap.ca.ui.model.format.DateFormat");
 jQuery.sap.require("cfr.etsapp.manage.utils.InitialConfigHelper");
 jQuery.sap.require("sap.ca.ui.model.type.Number");
+jQuery.sap.require("cfr.etsapp.manage.utils.Controller");
+jQuery.sap.require("cfr.etsapp.manage.dev.devapp");
 sap.ca.scfld.md.controller.BaseFullscreenController.extend("cfr.etsapp.manage.view.S3", {
 	extHookChangeHeaderFooterOptions: null,
 	extHookAlterColumns: null,
@@ -22,6 +24,11 @@ sap.ca.scfld.md.controller.BaseFullscreenController.extend("cfr.etsapp.manage.vi
 		this.oBundle = this.oApplicationFacade.oApplicationImplementation.getResourceBundle();
 		this.oConfiguration = new cfr.etsapp.manage.utils.InitialConfigHelper();
 		this.oConfiguration.setResourceBundle(this.oBundle);
+		var oEventBus = sap.ui.getCore().getEventBus();
+			oEventBus.subscribe("OfflineStore", "Refreshing", this.onRefreshing, this);
+			oEventBus.subscribe("OfflineStore", "Synced", this.synFinished, this);
+			oEventBus.subscribe("OfflineStore", "OpenErrDialog", this.openErrDialog, this);
+			//this._sErrorText = this.getResourceBundle().getText("errorText");
 		if (!this.oService) {
 			this.oService = new cfr.etsapp.manage.Service();
 		}
@@ -43,6 +50,191 @@ sap.ca.scfld.md.controller.BaseFullscreenController.extend("cfr.etsapp.manage.vi
 			}
 		});
 	},
+	
+	/**
+		 * UI5 OfflineStore channel Refreshing event handler, refreshing the offline store data
+		*/ 
+		onRefreshing: function() {
+			if (devapp.isOnline) {
+				this.getView().setBusy(true);
+				//ask refreshing store after flush
+				devapp.refreshing = true;
+				if (devapp.devLogon) {
+					devapp.devLogon.flushAppOfflineStore();
+				}
+			} else {
+				this.getView().getModel().refresh();
+			}
+		},
+
+		/**
+		 * UI5 OfflineStore channel Synced event handler, after refreshing offline store, refresh data model
+		 */
+		synFinished: function() {
+			this.getView().getModel().refresh();
+			this.getView().setBusy(false);
+			var errorNum = devapp.deviceModel.getProperty("/errorNum");
+			if (errorNum > 0) {
+				if (!this._errDlg) {
+					this._errDlg = sap.ui.xmlfragment("errorArchiveDialog", "test_offline.view.ErrorArchive", this);
+					this.getView().addDependent(this._errDlg);
+				}
+				this._errDlg.open();
+			} else if (devapp.devLogon.appOfflineStore.callbackError) {
+				MessageBox.alert(JSON.stringify(devapp.devLogon.appOfflineStore.callbackError));
+			}
+			devapp.devLogon.appOfflineStore.callbackError = null;
+		},
+
+		onNavtoErrDetail: function(oEvent) {
+			var oCtx = oEvent.getSource().getBindingContext();
+			var oNavCon = Fragment.byId("errorArchiveDialog", "errorNav");
+			var oDetailPage = Fragment.byId("errorArchiveDialog", "errorDetail");
+			oNavCon.to(oDetailPage);
+			oDetailPage.bindElement(oCtx.getPath());
+		},
+
+		onErrorNavBack: function() {
+			var oNavCon = Fragment.byId("errorArchiveDialog", "errorNav");
+			oNavCon.back();
+		},
+
+		onDelBTVisible: function(errCount) {
+			var bShow = false;
+			if (errCount > 0) {
+				bShow = true;
+			}
+
+			return bShow;
+		},
+
+		onDeleteErrRecord: function() {
+			if (devapp.devLogon.appOfflineStore.errorArchiveRowURL) {
+				var model = this.getView().getModel();
+				model.remove(devapp.devLogon.appOfflineStore.errorArchiveRowURL, {
+					success: function() {
+						//clean errorNum
+						devapp.deviceModel.setProperty("/errorNum", 0);
+						devapp.devLogon.appOfflineStore.errorArchiveRowURL = null;
+					},
+					error: function(error) {
+						MessageBox.alert(JSON.stringify(error));
+					}
+				});
+			}
+		},
+
+		openErrDialog: function() {
+			if (!this._errDlg) {
+				this._errDlg = sap.ui.xmlfragment("errorArchiveDialog", "test_offline.view.ErrorArchive", this);
+				this.getView().addDependent(this._errDlg);
+			}
+			this._errDlg.open();
+		},
+
+		onErrDlgClose: function() {
+			this._errDlg.close();
+		},
+
+		onFormatTitle: function(requestMethod) {
+			var title = "Error";
+			if (requestMethod.toLowerCase() === "delete") {
+				title = "Warning";
+			}
+			return title;
+		},
+		/**
+		 * UI5 OfflineStore channel Refreshing event handler, refreshing the offline store data
+		 */
+		onRefreshing: function() {
+			if (devapp.isOnline) {
+				this.getView().setBusy(true);
+				//ask refreshing store after flush
+				devapp.refreshing = true;
+				if (devapp.devLogon) {
+					devapp.devLogon.flushAppOfflineStore();
+				}
+			} else {
+				this.getView().getModel().refresh();
+			}
+		},
+
+		/**
+		 * UI5 OfflineStore channel Synced event handler, after refreshing offline store, refresh data model
+		 */
+		synFinished: function() {
+			this.getView().getModel().refresh();
+			this.getView().setBusy(false);
+			var errorNum = devapp.deviceModel.getProperty("/errorNum");
+			if (errorNum > 0) {
+				if (!this._errDlg) {
+					this._errDlg = sap.ui.xmlfragment("errorArchiveDialog", "test_offline.view.ErrorArchive", this);
+					this.getView().addDependent(this._errDlg);
+				}
+				this._errDlg.open();
+			} else if (devapp.devLogon.appOfflineStore.callbackError) {
+				MessageBox.alert(JSON.stringify(devapp.devLogon.appOfflineStore.callbackError));
+			}
+			devapp.devLogon.appOfflineStore.callbackError = null;
+		},
+
+		onNavtoErrDetail: function(oEvent) {
+			var oCtx = oEvent.getSource().getBindingContext();
+			var oNavCon = Fragment.byId("errorArchiveDialog", "errorNav");
+			var oDetailPage = Fragment.byId("errorArchiveDialog", "errorDetail");
+			oNavCon.to(oDetailPage);
+			oDetailPage.bindElement(oCtx.getPath());
+		},
+
+		onErrorNavBack: function() {
+			var oNavCon = Fragment.byId("errorArchiveDialog", "errorNav");
+			oNavCon.back();
+		},
+
+		onDelBTVisible: function(errCount) {
+			var bShow = false;
+			if (errCount > 0) {
+				bShow = true;
+			}
+
+			return bShow;
+		},
+
+		onDeleteErrRecord: function() {
+			if (devapp.devLogon.appOfflineStore.errorArchiveRowURL) {
+				var model = this.getView().getModel();
+				model.remove(devapp.devLogon.appOfflineStore.errorArchiveRowURL, {
+					success: function() {
+						//clean errorNum
+						devapp.deviceModel.setProperty("/errorNum", 0);
+						devapp.devLogon.appOfflineStore.errorArchiveRowURL = null;
+					},
+					error: function(error) {
+						MessageBox.alert(JSON.stringify(error));
+					}
+				});
+			}
+		},
+
+		openErrDialog: function() {
+			if (!this._errDlg) {
+				this._errDlg = sap.ui.xmlfragment("errorArchiveDialog", "test_offline.view.ErrorArchive", this);
+				this.getView().addDependent(this._errDlg);
+			}
+			this._errDlg.open();
+		},
+
+		onErrDlgClose: function() {
+			this._errDlg.close();
+		},
+
+		onFormatTitle: function(requestMethod) {
+			var title = "Error";
+			if (requestMethod.toLowerCase() === "delete") {
+				title = "Warning";
+			}
+			return title;
+		},
 	onAfterRendering: function() {
 		var s = this;
 		if (!this.oApplication.pernr) {
@@ -843,9 +1035,12 @@ sap.ca.scfld.md.controller.BaseFullscreenController.extend("cfr.etsapp.manage.vi
 			n = 2;
 		}
 		var c = new Date(this.byId("WEEKLY_CALENDAR").getCurrentDate());
-		var f = new Date(c.getFullYear(), c.getMonth(), c.getDate() - this.getActualOffset(new Date(I.StartDate.substring(0, 4) + "/" + I.StartDate
+		var f = new Date(c.getFullYear(), c.getMonth() , c.getDate() - this.getActualOffset(new Date(I.StartDate.substring(0, 4) + "/" + I.StartDate
 			.substring(4, 6) + "/" + I.StartDate.substring(6, 8)).getDay(), c.getDay()));
-		var l = new Date(f.getFullYear(), f.getMonth(), f.getDate() + (7 * n - 1));
+		var l = new Date(f.getFullYear(), c.getMonth(), f.getDate() + (7 * n - 1));
+		var fol = new Date(c.getFullYear(), c.getMonth() - 1, c.getDate() - this.getActualOffset(new Date(I.StartDate.substring(0, 4) + "/" + I.StartDate
+			.substring(4, 6) + "/" + I.StartDate.substring(6, 8)).getDay(), c.getDay()));
+		var lol = new Date(f.getFullYear(), c.getMonth() + 1, f.getDate() + (7 * n - 1));
 		this.oService.getWorkDays(this, this.oApplication.pernr, this.getDateStr(f), this.getDateStr(l), function(d) {
 			s.getTimeSheetCalendar(d);
 			if (m.getData().activities) {
@@ -857,6 +1052,14 @@ sap.ca.scfld.md.controller.BaseFullscreenController.extend("cfr.etsapp.manage.vi
 			if (m.getData().workingDayList) {
 				s.setWeeklyData(d);
 			}
+		});
+		this.oService.getWorkDays(this, this.oApplication.pernr, this.getDateStr(fol), this.getDateStr(lol), function(d) {
+			alert("ok");
+			//d = data.result + et - 1 mois
+		});
+		this.oService.getTimeDataList(this, this.oApplication.pernr, this.getDateStr(fol), this.getDateStr(lol), function(d) {
+			alert("ok");
+			//d = data.result + et - 1 mois
 		});
 		this.setBtnText("deleteBtn", s.oApplicationFacade.getResourceBundle().getText("DELETE"));
 		this.setBtnEnabled("deleteBtn", false);

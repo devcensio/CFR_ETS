@@ -13,7 +13,8 @@
 				"uri": "/sap/opu/odata/CFR/ETSAPP_SRV/",
 				"settings": {}
 			}
-		}
+		},
+		"offline": true
 	},
 	"sap.ui": {
 		"_version": "1.0.0",
