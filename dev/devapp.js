@@ -135,7 +135,7 @@ sap.ui.define([
 				new Shell({
 					app: new ComponentContainer({
 						height: "100%",
-						name: "CFR_ETS"
+						name: "cfr.etsapp.manage"
 					})
 				}).placeAt("content");
 			});

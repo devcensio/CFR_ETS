@@ -23,16 +23,38 @@
 <!-- 		</script> -->
 
 		<!-- only load the mobile lib "sap.m" and the "sap_bluecrystal" theme -->
-
+	    <script type="text/javascript" src="../cordova.js"></script>
 		<script>
-        sap.ui.getCore().attachInit(function() {
+/*        sap.ui.getCore().attachInit(function() {
             new sap.m.Shell({
                 app: new sap.ui.core.ComponentContainer({
                     height : "100%",
                     name : "cfr.etsapp.manage"
                 })
             }).placeAt("content");
-        });					
+        });	*/
+        
+        	window.onload = function() {
+				document.addEventListener("deviceready", function(){
+					window.isDeviceReady=true;
+				}, false);
+				sap.ui.require([
+				"cfr/etsapp/manage/dev/devapp"
+				], function (devapp) {
+					if (window.cordova || devapp.findUrlParameterName("companionbuster")) {
+						var page = window.location.pathname.split("/").pop();
+		                if(page === "extended_runnable_file.html") {
+		                    window.sap_webide_FacadePreview = true;
+		                }
+						devapp.initialize();
+					}
+					else {
+						devapp.startApp();
+					}
+				})
+			}
+        
+        
 		</script>
 
 	</head>

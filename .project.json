@@ -14,7 +14,7 @@
     "resourceModelName": "i18n"
   },
   "mockpreview": {
-    "mockUri": "/sap/opu/odata/CFR/ETSAPP_SRV",
+    "mockUri": "http://192.168.42.3:50000/sap/opu/odata/CFR/ETSAPP_SRV/",
     "metadataFilePath": "",
     "loadJSONFiles": false,
     "loadCustomRequests": false,

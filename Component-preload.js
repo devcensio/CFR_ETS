@@ -53,11 +53,11 @@ jQuery.sap.registerPreloadedModules({
 			sap.ca.scfld.md.ConfigurationBase.extend("cfr.etsapp.manage.Configuration", {
 				oServiceParams: {
 					serviceList: [{
-						name: "HCM_TIMESHEET_MAN_SRV",
+						name: "ETSAPP_SRV",
 						masterCollection: "Favorites",
-						serviceUrl: cfr.etsapp.manage.Component.getMetadata().getManifestEntry("sap.app").dataSources["HCM_TIMESHEET_MAN_SRV"].uri,
+						serviceUrl: cfr.etsapp.manage.Component.getMetadata().getManifestEntry("sap.app").dataSources["ETSAPP_SRV"].uri,
 						isDefault: true,
-						mockedDataSource: "/hcm.emp.mytimesheet/model/metadata.xml"
+						mockedDataSource: "/cfr.ets.manage/model/metadata.xml"
 					}]
 				},
 				getServiceParams: function() {
