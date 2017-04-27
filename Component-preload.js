@@ -1546,6 +1546,8 @@ jQuery.sap.registerPreloadedModules({
 					var f = new Date(c.getFullYear(), c.getMonth(), c.getDate() - this.getActualOffset(new Date(I.StartDate.substring(0, 4) + "/" +
 						I.StartDate.substring(4, 6) + "/" + I.StartDate.substring(6, 8)).getDay(), c.getDay()));
 					var l = new Date(f.getFullYear(), f.getMonth(), f.getDate() + (7 * n - 1));
+					var fol = new Date(c.getFullYear(), c.getMonth() - 1, c.getDate() - this.getActualOffset(new Date(I.StartDate.substring(0, 4) + "/" + I.StartDate.substring(4, 6) + "/" + I.StartDate.substring(6, 8)).getDay(), c.getDay()));
+					var lol = new Date(f.getFullYear(), c.getMonth() + 1, f.getDate() + (7 * n - 1));
 					this.oService.getWorkDays(this, this.oApplication.pernr, this.getDateStr(f), this.getDateStr(l), function(d) {
 						s.getTimeSheetCalendar(d);
 						if (m.getData().activities) {
@@ -1557,6 +1559,17 @@ jQuery.sap.registerPreloadedModules({
 						if (m.getData().workingDayList) {
 							s.setWeeklyData(d);
 						}
+					});
+					this.oService.getWorkDays(this, this.oApplication.pernr, this.getDateStr(fol), this.getDateStr(lol), function(d) {
+						//alert("ok");
+						//d = data.result + et - 1 mois
+						var oModel = sap.ui.getCore().getModel();
+						oModel.create("ModelOff", d);
+						sap.ui.setModel("ModelOff", d);
+					});
+					this.oService.getTimeDataList(this, this.oApplication.pernr, this.getDateStr(fol), this.getDateStr(lol), function(d) {
+						//alert("ok");
+						//d = data.result + et - 1 mois
 					});
 					this.setBtnText("deleteBtn", s.oApplicationFacade.getResourceBundle().getText("DELETE"));
 					this.setBtnEnabled("deleteBtn", false);

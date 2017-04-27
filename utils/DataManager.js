@@ -93,6 +93,11 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 		});
 	},
 	getWorkDays: function(a, p, b, e, s) {
+		if (sap.ui.getCore().getModel("ModelOff"))
+		{
+			s(sap.ui.getCore().getModel("ModelOff").results);
+		}
+		else {
 		var c = this;
 		this._initialize(a);
 		this.oDataModel.read("/WorkCalendars", null, ["$filter=Pernr eq '" + p + "' and StartDate eq '" + b + "' and EndDate eq '" + e + "'"],
@@ -103,6 +108,7 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 			function(E) {
 				c.processError(E);
 			});
+		}
 	},
 	getFavorites: function(a, p, s) {
 		this.showBusy();
