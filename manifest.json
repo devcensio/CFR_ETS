@@ -10,7 +10,7 @@
 		"ach": "PA-FIO-TS",
 		"dataSources": {
 			"ETSAPP_SRV": {
-				"uri": "http://192.168.42.3:50000/sap/opu/odata/CFR/ETSAPP_SRV/",
+				"uri": "/sap/opu/odata/CFR/ETSAPP_SRV/",
 				"settings": {}
 			}
 		},
@@ -18,7 +18,16 @@
 	},
 	"sap.ui": {
 		"_version": "1.0.0",
-		"technology": "UI5"
+		"technology": "UI5",
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		},
+		"supportedThemes": [
+			"sap_hcb",
+			"sap_bluecrystal"
+		]
 	},
 	"sap.ui5": {
 		"_version": "1.0.0",
@@ -30,6 +39,15 @@
 				"sap.ca.scfld.md": {}
 			},
 			"components": {}
+		},
+		"sap.mobile": {
+			"_version": "1.1.0",
+			"definingRequests": {
+				"WorkListCollection": {
+					"dataSource": "mainService",
+					"path": "/WorkListCollection"
+				}
+			}
 		}
 	},
 	"sap.platform.hcp": {
