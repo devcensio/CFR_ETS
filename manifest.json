@@ -36,6 +36,7 @@
 		"uri": "",
 		"_version": "1.1.0"
 	},
+	
 	"sap.mobile": {
 		"_version": "1.1.0",
 		"definingRequests": {
