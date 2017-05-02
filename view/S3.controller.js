@@ -1054,11 +1054,17 @@ sap.ca.scfld.md.controller.BaseFullscreenController.extend("cfr.etsapp.manage.vi
 			}
 		});
 		// this.oService.getWorkDays(this, this.oApplication.pernr, this.getDateStr(fol), this.getDateStr(lol), function(d) {
+<<<<<<< HEAD
 		// 	alert("ok");
 		// 	//d = data.result + et - 1 mois
 		// });
 		// this.oService.getTimeDataList(this, this.oApplication.pernr, this.getDateStr(fol), this.getDateStr(lol), function(d) {
 		// 	alert("ok");
+=======
+		// 	//d = data.result + et - 1 mois
+		// });
+		// this.oService.getTimeDataList(this, this.oApplication.pernr, this.getDateStr(fol), this.getDateStr(lol), function(d) {
+>>>>>>> 2c787c013e7390750022f198eba9e781495c62ac
 		// 	//d = data.result + et - 1 mois
 		// });
 		this.setBtnText("deleteBtn", s.oApplicationFacade.getResourceBundle().getText("DELETE"));
