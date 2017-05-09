@@ -101,7 +101,26 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 				s(d.results);
 			},
 			function(E) {
-				c.processError(E);
+				if (E.message === "HTTP request failed") {
+					var objectStore = window.oController.myDB.transaction("workingdaysStore").objectStore("workingdaysStore");
+					var items = [];
+					objectStore.openCursor().onsuccess = function(event) {
+						var cursor = event.target.result;
+						if (cursor) {
+							if (parseInt(cursor.value.Date) >= parseInt(b) && parseInt(cursor.value.Date) <= parseInt(e))
+								items.push(cursor.value);
+							cursor.continue();
+						} else {
+							var oJSONModel = new sap.ui.model.json.JSONModel();
+							oJSONModel.setData({
+								modelData: items
+							});
+							s(oJSONModel.getData().modelData);
+						}
+					}
+				} else {
+					c.processError(E);
+				}
 			});
 	},
 	getFavorites: function(a, p, s) {
@@ -179,8 +198,28 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 				s(d.results);
 			},
 			function(E) {
-				c.hideBusy(true);
-				c.processError(E);
+				if (E.message === "HTTP request failed") {
+					c.hideBusy(true);
+					var objectStore = window.oController.myDB.transaction("timedataStore").objectStore("timedataStore");
+					var items = [];
+					objectStore.openCursor().onsuccess = function(event) {
+						var cursor = event.target.result;
+						if (cursor) {
+							if (parseInt(cursor.value.Date) >= parseInt(b) && parseInt(cursor.value.Date) <= parseInt(e))
+								items.push(cursor.value);
+							cursor.continue();
+						} else {
+							var oJSONModel = new sap.ui.model.json.JSONModel();
+							oJSONModel.setData({
+								modelData: items
+							});
+							s(oJSONModel.getData().modelData);
+						}
+					}
+				} else {
+					c.hideBusy(true);
+					c.processError(E);
+				}
 			});
 	},
 	getWorkListCollection: function(a, p, b, e, s) {
