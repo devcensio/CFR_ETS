@@ -1056,6 +1056,7 @@ sap.ca.scfld.md.controller.BaseFullscreenController.extend("cfr.etsapp.manage.vi
 			}
 		}
 	},
+	
 	updateData: function() {
 		var n;
 		var m = this.oApplication.getModel("TSM_WEEKLY");
