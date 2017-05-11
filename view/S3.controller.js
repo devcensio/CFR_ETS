@@ -63,6 +63,7 @@ sap.ca.scfld.md.controller.BaseFullscreenController.extend("cfr.etsapp.manage.vi
 			createDBRequest.onupgradeneeded = function(event) {
 				var db = event.target.result;
 				var objectStore = db.createObjectStore("workingdaysStore", {keyPath: "Date"});
+				objectStore.clear();
 				objectStore.createIndex("Date", "Date", {unique: true});
 				objectStore.createIndex("EndDate", "EndDate", {unique: false});
 				objectStore.createIndex("FirstDayOfWeek", "FirstDayOfWeek", {unique: false});
@@ -72,6 +73,7 @@ sap.ca.scfld.md.controller.BaseFullscreenController.extend("cfr.etsapp.manage.vi
 				objectStore.createIndex("StartDate", "StartDate", {unique: false});
 				objectStore.createIndex("WorkingDays", "WorkingDays", {unique: false});
 				objectStore = db.createObjectStore("timedataStore", { keyPath: "id", autoIncrement:true});
+				objectStore.clear();
 				objectStore.createIndex("id", "id", {unique: true});
 				objectStore.createIndex("EndDate", "EndDate", {unique: false});
 				objectStore.createIndex("FieldName", "FieldName", {unique: false});
@@ -83,6 +85,83 @@ sap.ca.scfld.md.controller.BaseFullscreenController.extend("cfr.etsapp.manage.vi
 				objectStore.createIndex("RecordNumber", "RecordNumber", {unique: false});
 				objectStore.createIndex("StartDate", "StartDate", {unique: false});
 				objectStore.createIndex("Date", "Date", {unique: false});
+				objectStore = db.createObjectStore("PersonnelAssigmentStore", { keyPath: "Pernr"});
+				objectStore.clear();
+				objectStore.createIndex("AssignmentText", "AssignmentText", {unique: false});
+				objectStore.createIndex("Pernr", "Pernr", {unique: true});
+				objectStore = db.createObjectStore("FavoritesStore", { keyPath: "ID"});
+				objectStore.clear();
+				objectStore.createIndex("ObjType", "ObjType", {unique: false});
+				objectStore.createIndex("ID", "ID", {unique: true});
+				objectStore.createIndex("Pernr", "Pernr", {unique: false});
+				objectStore.createIndex("Field_Id", "Field_Id", {unique: false});
+				objectStore.createIndex("Field_Value", "Field_Value", {unique: false});
+				objectStore.createIndex("Field_Text", "Field_Text", {unique: false});
+				objectStore.createIndex("Name", "Name", {unique: false});
+				objectStore.createIndex("FavoriteDataFields", "FavoriteDataFields", {unique: false});
+				objectStore.createIndex("FavoriteOperation", "FavoriteOperation", {unique: false});
+				objectStore = db.createObjectStore("ProfileFieldStore", { keyPath: "ProfileId"});
+				objectStore.clear();
+				objectStore.createIndex("Pernr", "Pernr", {unique: false});
+				objectStore.createIndex("ProfileId", "ProfileId", {unique: true});
+				objectStore.createIndex("FieldName", "FieldName", {unique: false});
+				objectStore.createIndex("FieldText", "FieldText", {unique: false});
+				objectStore.createIndex("ReadOnly", "ReadOnly", {unique: false});
+				objectStore = db.createObjectStore("InitialInfoStore", { keyPath: "Pernr"});
+				objectStore.clear();
+				objectStore.createIndex("Pernr", "Pernr", {unique: true});
+				objectStore.createIndex("EmployeeName", "EmployeeName", {unique: false});
+				objectStore.createIndex("AllowNonWorkingDays", "AllowNonWorkingDays", {unique: false});
+				objectStore.createIndex("ClockEntry", "ClockEntry", {unique: false});
+				objectStore.createIndex("StartDate", "StartDate", {unique: false});
+				objectStore.createIndex("EndDate", "EndDate", {unique: false});
+				objectStore.createIndex("WeekHours", "WeekHours", {unique: false});
+				objectStore.createIndex("MonthHours", "MonthHours", {unique: false});
+				objectStore.createIndex("AllHours", "AllHours", {unique: false});
+				objectStore.createIndex("ReleaseDirectly", "ReleaseDirectly", {unique: false});
+				objectStore.createIndex("ReleaseFuture", "ReleaseFuture", {unique: false});
+				objectStore.createIndex("FavoriteAvailable", "FavoriteAvailable", {unique: false});
+				objectStore.createIndex("ProfileID", "ProfileID", {unique: false});
+				objectStore.createIndex("WithTargetHours", "WithTargetHours", {unique: false});
+				objectStore = db.createObjectStore("TimeEntryStore", { keyPath: "Counter"});
+				objectStore.clear();
+				objectStore.createIndex("Pernr", "Pernr", {unique: false});
+				objectStore.createIndex("ProfileId", "ProfileId", {unique: false});
+				objectStore.createIndex("Counter", "Counter", {unique: true});
+				objectStore.createIndex("Reason", "Reason", {unique: false});
+				objectStore.createIndex("Status", "Status", {unique: false});
+				objectStore.createIndex("RefCounter", "RefCounter", {unique: false});
+				objectStore.createIndex("CatsDocNo", "CatsDocNo", {unique: false});
+				objectStore.createIndex("TimeEntryOperation", "TimeEntryOperation", {unique: false});
+				objectStore.createIndex("TimeEntryRelease", "TimeEntryRelease", {unique: false});
+				objectStore.createIndex("TimeEntryDataFields", "TimeEntryDataFields", {unique: false});
+				objectStore = db.createObjectStore("ValueHelpStore", { keyPath: "FieldId"});
+				objectStore.clear();
+				objectStore.createIndex("Pernr", "Pernr", {unique: false});
+				objectStore.createIndex("FieldId", "FieldId", {unique: true});
+				objectStore.createIndex("FieldName", "FieldName", {unique: false});
+				objectStore.createIndex("FieldValue", "FieldValue", {unique: false});
+				objectStore.createIndex("FieldRelated", "FieldRelated", {unique: false});
+				objectStore.createIndex("StartDate", "StartDate", {unique: false});
+				objectStore.createIndex("EndDate", "EndDate", {unique: false});
+				objectStore = db.createObjectStore("WorklistStore", { keyPath: "DataEntryProfileId"});
+				objectStore.clear();
+				objectStore.createIndex("Pernr", "Pernr", {unique: false});
+				objectStore.createIndex("DataEntryProfileId", "DataEntryProfileId", {unique: true});
+				objectStore.createIndex("FieldName", "FieldName", {unique: false});
+				objectStore.createIndex("FieldText", "FieldText", {unique: false});
+				objectStore.createIndex("FieldValue", "FieldValue", {unique: false});
+				objectStore.createIndex("FieldValueText", "FieldValueText", {unique: false});
+				objectStore.createIndex("RecordNumber", "RecordNumber", {unique: false});
+				objectStore.createIndex("StartDate", "StartDate", {unique: false});
+				objectStore.createIndex("EndDate", "EndDate", {unique: false});
+				objectStore.createIndex("Level", "Level", {unique: false});
+				objectStore = db.createObjectStore("FavoriteDataFieldsStore", { keyPath: "ID"});
+				objectStore.clear();
+				objectStore.createIndex("ID", "ID", {unique: true});
+				objectStore.createIndex("CATSHOURS", "CATSHOURS", {unique: false});
+				objectStore.createIndex("BEGUZ", "BEGUZ", {unique: false});
+				objectStore.createIndex("ENDUZ", "ENDUZ", {unique: false});
 			};
 			createDBRequest.onsuccess = function(event) {
 				window.oController.myDB = event.target.result;
@@ -1094,10 +1173,9 @@ sap.ca.scfld.md.controller.BaseFullscreenController.extend("cfr.etsapp.manage.vi
 			}
 		});
 		if (window.ftdf === 0) {
-			var fol = new Date(c.getFullYear(), c.getMonth() - 1, c.getDate() - this.getActualOffset(new Date(I.StartDate.substring(0, 4) + "/" +
-				I.StartDate
-				.substring(4, 6) + "/" + I.StartDate.substring(6, 8)).getDay(), c.getDay()));
-			var lol = new Date(f.getFullYear(), c.getMonth() + 1, f.getDate() + (7 * n - 1));
+			this.getView().setBusy(true);
+			var fol = new Date(c.getFullYear() - 1, 1, 1);
+			var lol = new Date(c.getFullYear() + 1, 12, 31);
 			this.oService.getWorkDays(this, this.oApplication.pernr, this.getDateStr(fol), this.getDateStr(lol), function(d) {
 				for (var key in d) {
 					var res = d[key];
@@ -1115,6 +1193,8 @@ sap.ca.scfld.md.controller.BaseFullscreenController.extend("cfr.etsapp.manage.vi
 					var oDataStore = oTransaction.objectStore("workingdaysStore");
 					oDataStore.add(oRecord);
 				}
+				window.ftdf++;
+				console.log(window.ftdf);
 			});
 			this.oService.getTimeDataList(this, this.oApplication.pernr, this.getDateStr(fol), this.getDateStr(lol), function(d) {
 				var date;
@@ -1139,8 +1219,83 @@ sap.ca.scfld.md.controller.BaseFullscreenController.extend("cfr.etsapp.manage.vi
 					var oDataStore = oTransaction.objectStore("timedataStore");
 					oDataStore.add(oRecord);
 				}
+				window.ftdf++;
+				console.log(window.ftdf);
 			});
-			window.ftdf = 1;
+			this.oService.getFavorites(this, this.oApplication.pernr, function(D) {
+			for (var key in D) {
+					var res = D[key];
+					var oRecord = {
+						ObjType: res.ObjType,
+						ID: res.ID,
+						Pernr: res.Pernr,
+						Field_Id: res.Field_Id,
+						Field_Value: res.Field_Value,
+						Field_Text: res.Field_Text,
+						Name: res.Name,
+						FavoriteDataFields: res.FavoriteDataFields,
+						FavoriteOperation: res.FavoriteOperation
+					};
+					var oTransaction = window.oController.myDB.transaction(["FavoritesStore"], "readwrite");
+					var oDataStore = oTransaction.objectStore("FavoritesStore");
+					oDataStore.add(oRecord);
+					var oRecord = {
+						ID: res.ID,
+						CATSHOURS: res.FavoriteDataFields.CATSHOURS,
+						BEGUZ: res.FavoriteDataFields.BEGUZ,
+						ENDUZ: res.FavoriteDataFields.ENDUZ
+					};
+					var oTransaction = window.oController.myDB.transaction(["FavoriteDataFieldsStore"], "readwrite");
+					var oDataStore = oTransaction.objectStore("FavoriteDataFieldsStore");
+					oDataStore.add(oRecord);
+				}
+				window.ftdf++;
+				console.log(window.ftdf);
+			});
+			this.oService.getWorkListCollection(this, this.oApplication.pernr, this.getDateStr(f), this.getDateStr(l),  function(D) {
+			for (var key in D) {
+					var res = D[key];
+					var oRecord = {
+						Pernr: res.Pernr,
+						DataEntryProfileId: res.DataEntryProfileId,
+						FieldName: res.FieldName,
+						FieldText: res.FieldText,
+						FieldValue: res.FieldValue,
+						FieldValueText: res.FieldValueText,
+						RecordNumber: res.RecordNumber,
+						StartDate: res.StartDate,
+						EndDate: res.EndDate,
+						Level: res.Level
+					};
+					var oTransaction = window.oController.myDB.transaction(["WorklistStore"], "readwrite");
+					var oDataStore = oTransaction.objectStore("WorklistStore");
+					oDataStore.add(oRecord);
+				}
+				window.ftdf++;
+				console.log(window.ftdf);
+			});
+			this.oService.getProfileFields(this, this.oApplication.pernr, function(D) {
+				for (var key in D) {
+					var res = D[key];
+					var oRecord = {
+						Pernr: res.Pernr,
+						ProfileId: res.ProfileId,
+						FieldName: res.FieldName,
+						FieldText: res.FieldText,
+						ReadOnly: res.ReadOnly
+					};
+					var oTransaction = window.oController.myDB.transaction(["ProfileFieldStore"], "readwrite");
+					var oDataStore = oTransaction.objectStore("ProfileFieldStore");
+					oDataStore.add(oRecord);
+				}//ici
+				window.ftdf++;
+				console.log(window.ftdf);
+			});
+			// while (window.ftdf !== 5){
+			// 	//test
+			// }
+			console.log(window.ftdf);
+			this.getView().setBusy(false);
 		}
 		this.setBtnText("deleteBtn", s.oApplicationFacade.getResourceBundle().getText("DELETE"));
 		this.setBtnEnabled("deleteBtn", false);

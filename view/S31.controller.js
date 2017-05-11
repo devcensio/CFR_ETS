@@ -1183,6 +1183,7 @@ sap.ca.scfld.md.controller.BaseFullscreenController.extend("cfr.etsapp.manage.vi
 						}
 					}
 				}
+				setTimeout(function(){}, 2000);
 				s.oApplication.getModel("createScreenModel").setProperty("/favorites", s.favorites);
 				if (s.oApplication.getModel("createScreenModel").getProperty("/projects")) {
 					if (s.oApplication.getModel("createScreenModel").getProperty("/favorites").length === 0 && s.oApplication.getModel(

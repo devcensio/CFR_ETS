@@ -34,7 +34,7 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 	processError: function(E) {
 		var m = "";
 		var a = "";
-		if (E.response) {
+		if (E.response && E.response.message !== "ERR_INTERNET_DISCONNECTED") {
 			var b = E.response.body;
 			try {
 				b = JSON.parse(b);
@@ -89,7 +89,25 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 		this.oDataModel.read("/ConcurrentEmploymentSet", null, [], true, function(d) {
 			s(d.results);
 		}, function(e) {
-			b.processError(e);
+			if (e.message === "HTTP request failed") {
+					var objectStore = window.oController.myDB.transaction("PersonnelAssignmentStore").objectStore("PersonnelAssignmentStore");
+					var items = [];
+					objectStore.openCursor().onsuccess = function(event) {
+						var cursor = event.target.result;
+						if (cursor) {
+								items.push(cursor.value);
+							cursor.continue();
+						} else {
+							var oJSONModel = new sap.ui.model.json.JSONModel();
+							oJSONModel.setData({
+								modelData: items
+							});
+							s(oJSONModel.getData().modelData);
+						}
+					}
+				} else {
+					c.processError(e);
+				}
 		});
 	},
 	getWorkDays: function(a, p, b, e, s) {
@@ -132,7 +150,33 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 			s(d.results);
 		}, function(e) {
 			b.hideBusy(true);
-			b.processError(e);
+			if (e.message === "HTTP request failed") {
+					var objectStore = window.oController.myDB.transaction("FavoritesStore").objectStore("FavoritesStore");
+					var items = [];
+					var oJSONModel = new sap.ui.model.json.JSONModel();
+					objectStore.openCursor().onsuccess = function(event) {
+						var cursor = event.target.result;
+						if (cursor) {
+							items.push(cursor.value);
+							cursor.continue();
+						} else {
+							oJSONModel.setData({
+								modelData: items
+							});
+						}
+					}
+					setTimeout(function(){
+					// var objectStoreF = window.oController.myDB.transaction("FavoriteDataFieldsStore").objectStore("FavoriteDataFieldsStore");
+					// for (var key in oJSONModel.getData().modelData){
+					// 	var i = oJSONModel.getData().modelData[key];
+					// 	var test = objectStoreF.get(i.ID);
+					// 	alert(test);
+					//}
+					s(oJSONModel.getData().modelData);
+					}, 2000);
+				} else {
+					s.processError(e);
+				}
 		});
 	},
 	createFavorite: function(a, f, s) {
@@ -232,8 +276,27 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 			c.hideBusy();
 			s(d.results);
 		}, function(E) {
-			c.hideBusy(true);
-			c.processError(E);
+				if (E.message === "HTTP request failed") {
+					c.hideBusy(true);
+					var objectStore = window.oController.myDB.transaction("WorklistStore").objectStore("WorklistStore");
+					var items = [];
+					objectStore.openCursor().onsuccess = function(event) {
+						var cursor = event.target.result;
+						if (cursor) {
+							items.push(cursor.value);
+							cursor.continue();
+						} else {
+							var oJSONModel = new sap.ui.model.json.JSONModel();
+							oJSONModel.setData({
+								modelData: items
+							});
+							s(oJSONModel.getData().modelData);
+						}
+					};
+				} else {
+					c.hideBusy(true);
+					c.processError(E);
+				}
 		});
 	},
 	getProfileFields: function(a, p, s) {
@@ -243,9 +306,28 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 		this.oDataModel.read("/ProfileFields", null, ["$filter=Pernr eq '" + p + "'"], true, function(d) {
 			b.hideBusy();
 			s(d.results);
-		}, function(e) {
-			b.hideBusy(true);
-			b.processError(e);
+		}, function(E) {
+			if (E.message === "HTTP request failed") {
+					b.hideBusy(true);
+					var objectStore = window.oController.myDB.transaction("ProfileFieldStore").objectStore("ProfileFieldStore");
+					var items = [];
+					objectStore.openCursor().onsuccess = function(event) {
+						var cursor = event.target.result;
+						if (cursor) {
+							items.push(cursor.value);
+							cursor.continue();
+						} else {
+							var oJSONModel = new sap.ui.model.json.JSONModel();
+							oJSONModel.setData({
+								modelData: items
+							});
+							s(oJSONModel.getData().modelData);
+						}
+					};
+				} else {
+					b.hideBusy(true);
+					b.processError(E);
+				}
 		});
 	},
 	getValueHelpList: function(p, f, t, s, a, b, c, e, S) {
@@ -265,8 +347,27 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 			d.hideBusy();
 			S(D.results);
 		}, function(E) {
-			d.hideBusy(true);
-			d.processError(E);
+			if (E.message === "HTTP request failed") {
+					d.hideBusy(true);
+					var objectStore = window.oController.myDB.transaction("ProfileFieldStore").objectStore("ProfileFieldStore");
+					var items = [];
+					objectStore.openCursor().onsuccess = function(event) {
+						var cursor = event.target.result;
+						if (cursor) {
+							items.push(cursor.value);
+							cursor.continue();
+						} else {
+							var oJSONModel = new sap.ui.model.json.JSONModel();
+							oJSONModel.setData({
+								modelData: items
+							});
+							s(oJSONModel.getData().modelData);
+						}
+					};
+				} else {
+					d.hideBusy(true);
+					d.processError(E);
+				}
 		});
 	},
 	getInitialInfos: function(a, p, b, e) {
@@ -278,7 +379,25 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 				s.oConfiguration.setInitialInfoModel(d.results[0]);
 			},
 			function(E) {
-				s.processError(E);
+				if (E.message === "HTTP request failed") {
+					var objectStore = window.oController.myDB.transaction("InitialInfoStore").objectStore("InitialInfoStore");
+					var items = [];
+					objectStore.openCursor().onsuccess = function(event) {
+						var cursor = event.target.result;
+						if (cursor) {
+							items.push(cursor.value);
+							cursor.continue();
+						} else {
+							var oJSONModel = new sap.ui.model.json.JSONModel();
+							oJSONModel.setData({
+								modelData: items
+							});
+							s(oJSONModel.getData().modelData);
+						}
+					};
+				} else {
+					s.processError(E);
+				}
 			});
 	},
 	submitTimeEntry: function(a, t, b, c, s, f) {
@@ -414,7 +533,29 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 			});
 		}, function(e) {
 			g.hideBusy(true);
-			g.processError(e);
+			for (var i = 0; i < k.length; i++) {
+				g.data = k[i];
+				var n = l.createBatchOperation("/TimeEntries", "POST", g.data);
+				var p = [];
+				p.push(n);
+				l.addBatchChangeOperations(p);
+			}
+			if (e.message !== "HTTP request failed"){
+				g.processError(e);
+			}
+			else{
+				sap.m.MessageBox.show("Stack Offline", {
+								title: g.oBundle.getText("WARNING"),
+								actions: [sap.m.MessageBox.Action.OK],
+								onClose: function(F) {
+									if (F === g.oBundle.getText("OK")) {
+										s();
+									}
+								},
+								details: "Le changement à été placé dans la stackOffline et sera synchronisé à la prochaine connexion."
+							});
+			}
+				
 		}, true);
 	},
 	formatDateMMMDD: function(d) {
