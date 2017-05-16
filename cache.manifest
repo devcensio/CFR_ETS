@@ -1,0 +1,13 @@
+CACHE MANIFEST
+#Version 1
+
+CACHE:
+index.html
+manifest.json
+view/S31.controller.js
+view/S31.view.xml
+view/S3.controller.js
+view/S3.view.xml
+
+NETWORK:
+*
