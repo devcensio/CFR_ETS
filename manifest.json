@@ -18,7 +18,12 @@
 	},
 	"sap.ui": {
 		"_version": "1.0.0",
-		"technology": "UI5"
+		"technology": "UI5",
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		}
 	},
 	"sap.ui5": {
 		"_version": "1.0.0",

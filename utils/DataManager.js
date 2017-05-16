@@ -113,6 +113,7 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 	getWorkDays: function(a, p, b, e, s) {
 		var c = this;
 		this._initialize(a);
+		this.oDataModel.setHeaders({"X-CSRF-Token": "Fetch"});
 		this.oDataModel.read("/WorkCalendars", null, ["$filter=Pernr eq '" + p + "' and StartDate eq '" + b + "' and EndDate eq '" + e + "'"],
 			true,
 			function(d) {
