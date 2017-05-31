@@ -87,27 +87,11 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 		var b = this;
 		this._initialize(a);
 		this.oDataModel.read("/ConcurrentEmploymentSet", null, [], true, function(d) {
+			window.online = true;
 			s(d.results);
 		}, function(e) {
-			if (e.message === "HTTP request failed") {
-					var objectStore = window.oController.myDB.transaction("PersonnelAssignmentStore").objectStore("PersonnelAssignmentStore");
-					var items = [];
-					objectStore.openCursor().onsuccess = function(event) {
-						var cursor = event.target.result;
-						if (cursor) {
-								items.push(cursor.value);
-							cursor.continue();
-						} else {
-							var oJSONModel = new sap.ui.model.json.JSONModel();
-							oJSONModel.setData({
-								modelData: items
-							});
-							s(oJSONModel.getData().modelData);
-						}
-					}
-				} else {
-					c.processError(e);
-				}
+			window.online = false;
+			s();
 		});
 	},
 	getWorkDays: function(a, p, b, e, s) {
@@ -117,9 +101,11 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 		this.oDataModel.read("/WorkCalendars", null, ["$filter=Pernr eq '" + p + "' and StartDate eq '" + b + "' and EndDate eq '" + e + "'"],
 			true,
 			function(d) {
+				window.online = true;
 				s(d.results);
 			},
 			function(E) {
+				window.online = false;
 				if (E.message === "HTTP request failed") {
 					var objectStore = window.oController.myDB.transaction("workingdaysStore").objectStore("workingdaysStore");
 					var items = [];
@@ -148,8 +134,10 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 		this._initialize(a);
 		this.oDataModel.read("/Favorites", null, ["$filter=Pernr eq '" + p + "'"], true, function(d) {
 			b.hideBusy();
+			window.online = true;
 			s(d.results);
 		}, function(e) {
+			window.online = false;
 			b.hideBusy(true);
 			if (e.message === "HTTP request failed") {
 					var objectStore = window.oController.myDB.transaction("FavoritesStore").objectStore("FavoritesStore");
@@ -167,12 +155,6 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 						}
 					}
 					setTimeout(function(){
-					// var objectStoreF = window.oController.myDB.transaction("FavoriteDataFieldsStore").objectStore("FavoriteDataFieldsStore");
-					// for (var key in oJSONModel.getData().modelData){
-					// 	var i = oJSONModel.getData().modelData[key];
-					// 	var test = objectStoreF.get(i.ID);
-					// 	alert(test);
-					//}
 					s(oJSONModel.getData().modelData);
 					}, 2000);
 				} else {
@@ -236,6 +218,7 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 		this.oDataModel.read("/TimeDataList", null, ["$filter=Pernr eq '" + p + "' and StartDate eq '" + b + "' and EndDate eq '" + e + "'"],
 			true,
 			function(d) {
+				window.online = true;
 				for (var i = 0; i < d.results.length; i++) {
 					d.results[i].Level = d.results[i].Level.toString().trim();
 				}
@@ -243,6 +226,7 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 				s(d.results);
 			},
 			function(E) {
+				window.online = false;
 				if (E.message === "HTTP request failed") {
 					c.hideBusy(true);
 					var objectStore = window.oController.myDB.transaction("timedataStore").objectStore("timedataStore");
@@ -274,9 +258,11 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 		this.oDataModel.read("/WorkListCollection", null, ["$filter=Pernr eq '" + p + "' and StartDate eq '" + b + "' and EndDate eq '" + e +
 			"'"
 		], true, function(d) {
+			window.online = true;
 			c.hideBusy();
 			s(d.results);
 		}, function(E) {
+			window.online = false;
 				if (E.message === "HTTP request failed") {
 					c.hideBusy(true);
 					var objectStore = window.oController.myDB.transaction("WorklistStore").objectStore("WorklistStore");
@@ -410,14 +396,17 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 		var l = this.oDataModel;
 		this.errors = [];
 		this.responseData = [];
+		this.getPersonellAssignments(a, function(){
+		if (window.online === true){
 		l.refreshSecurityToken(function() {
+			if (k.length !== 0){
 			for (var i = 0; i < k.length; i++) {
 				g.data = k[i];
 				var n = l.createBatchOperation("/TimeEntries", "POST", g.data);
 				var p = [];
 				p.push(n);
 				l.addBatchChangeOperations(p);
-			}
+			}}
 			l.submitBatch(function(D) {
 				var q = [],
 					r = "",
@@ -532,7 +521,11 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 				g.hideBusy(true);
 				g.processError(e);
 			});
-		}, function(e) {
+			}, function(e) {
+					g.processError(e);
+			}, true);
+		}
+		else {
 			g.hideBusy(true);
 			for (var i = 0; i < k.length; i++) {
 				g.data = k[i];
@@ -541,10 +534,64 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 				p.push(n);
 				l.addBatchChangeOperations(p);
 			}
-			if (e.message !== "HTTP request failed"){
-				g.processError(e);
-			}
-			else{
+			var date = k[0].TimeEntryDataFields.WORKDATE.substring(0, 10);
+				date = date.substring(0, 4) + date.substring(5, 7) + date.substring(8, 10);
+				var recnb = 0;
+				
+				var objectStore = window.oController.myDB.transaction(["timedataStore"], "readwrite").objectStore("timedataStore");
+				var index = objectStore.index("FieldValue");
+
+				index.get(k[0].Counter).onsuccess = function(event) {
+					recnb = event.target.result.RecordNumber;
+				};
+				var objectStore = window.oController.myDB.transaction(["timedataStore"], "readwrite").objectStore("timedataStore");
+				objectStore.openCursor().onsuccess = function(event) {
+					var cursor = event.target.result;
+					if (cursor) {
+						if (cursor.value.FieldName === "POSID" && cursor.value.RecordNumber === recnb && date === cursor.value.Date){
+							cursor.value.FieldValue = k[0].TimeEntryDataFields.POSID;
+							var res = cursor.update(cursor.value);
+            				res.onsuccess = function(e){
+                				console.log("update success!! Posid");
+            				}
+            				res.onerror = function(e){
+            					console.log("update failed!! Posid");
+            				}
+						}
+						if (cursor.value.FieldName === "TIME" && cursor.value.RecordNumber === recnb && date === cursor.value.Date){
+							cursor.value.FieldValue = k[0].TimeEntryDataFields.CATSAMOUNT;
+							var res = cursor.update(cursor.value);
+            				res.onsuccess = function(e){
+                				console.log("update success!! Time");
+            				}
+            				res.onerror = function(e){
+            					console.log("update failed!! Time");
+            				}
+						}
+						if (cursor.value.FieldName === "NOTES" && cursor.value.RecordNumber === recnb && date === cursor.value.Date){
+							cursor.value.FieldValueText = k[0].TimeEntryDataFields.LONGTEXT_DATA;
+							var res = cursor.update(cursor.value);
+            				res.onsuccess = function(e){
+                				console.log("update success!! Notes");
+            				}
+            				res.onerror = function(e){
+            					console.log("update failed!! Notes");
+            				}
+						}
+						if (cursor.value.FieldName === "STATUS" && cursor.value.RecordNumber === recnb && date === cursor.value.Date){
+							cursor.value.FieldValue = "WSYNC";
+							cursor.value.FieldValueText = "Version en attende de synchronisation";
+							var res = cursor.update(cursor.value);
+            				res.onsuccess = function(e){
+                				console.log("update success!! Status");
+            				}
+            				res.onerror = function(e){
+            					console.log("update failed!! Status");
+            				}
+						}
+						cursor.continue();
+					}
+				}
 				sap.m.MessageBox.show("Stack Offline", {
 								title: g.oBundle.getText("WARNING"),
 								actions: [sap.m.MessageBox.Action.OK],
@@ -556,8 +603,7 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 								details: "Le changement à été placé dans la stackOffline et sera synchronisé à la prochaine connexion."
 							});
 			}
-				
-		}, true);
+		});
 	},
 	formatDateMMMDD: function(d) {
 		var m = d.getMonth();
