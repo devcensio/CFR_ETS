@@ -1197,6 +1197,8 @@ sap.ca.scfld.md.controller.BaseFullscreenController.extend("cfr.etsapp.manage.vi
 		var f = new Date(c.getFullYear(), c.getMonth(), c.getDate() - this.getActualOffset(new Date(I.StartDate.substring(0, 4) + "/" + I.StartDate
 			.substring(4, 6) + "/" + I.StartDate.substring(6, 8)).getDay(), c.getDay()));
 		var l = new Date(f.getFullYear(), c.getMonth(), f.getDate() + (7 * n - 1));
+		window.fvar = f;
+		window.lvar = l;
 		this.oService.getWorkDays(this, this.oApplication.pernr, this.getDateStr(f), this.getDateStr(l), function(d) {
 			s.getTimeSheetCalendar(d);
 			if (m.getData().activities) {
@@ -1215,6 +1217,8 @@ sap.ca.scfld.md.controller.BaseFullscreenController.extend("cfr.etsapp.manage.vi
 			this.getView().setBusy(true);
 			var fol = new Date(c.getFullYear() - 1, 1, 1);
 			var lol = new Date(c.getFullYear() + 1, 12, 31);
+			window.fol = fol;
+			window.lol = lol;
 			this.oService.getWorkDays(this, this.oApplication.pernr, this.getDateStr(fol), this.getDateStr(lol), function(d) {
 				for (var key in d) {
 					var res = d[key];
@@ -1485,6 +1489,7 @@ sap.ca.scfld.md.controller.BaseFullscreenController.extend("cfr.etsapp.manage.vi
 	},
 	onSync: function(a, t, b, c, s, f) {
 		this.setBtnEnabled("SyncBtn", true);
+		var m = this.oApplication.getModel("TSM_WEEKLY");
 		this.oService.submitTimeEntry(a, t, b, c, s, f);
 		this.updateData();
 	},

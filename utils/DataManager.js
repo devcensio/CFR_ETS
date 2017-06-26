@@ -515,6 +515,13 @@ sap.ui.base.EventProvider.extend("cfr.etsapp.manage.Service", {
 						}, f(q, z));
 					}
 				} else {
+					var me = this.oApplication.getModel("TSM_WEEKLY");
+					this.oService.getTimeDataList(this, this.oApplication.pernr, this.getDateStr(window.fvar), this.getDateStr(window.lvar), function(d) {
+						me.setProperty("/activities", d);
+						if (me.getData().workingDayList) {
+							s.setWeeklyData(d);
+						}
+		});
 					s();
 				}
 			}, function(e) {
